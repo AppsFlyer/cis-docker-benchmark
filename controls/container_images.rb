@@ -24,6 +24,7 @@ title 'Container Images and Build File'
 
 # attributes
 CONTAINER_USER = attribute('container_user')
+BENCHMARK_VERSION ||= attribute('benchmark_version')
 
 # check if docker exists
 only_if('docker not found') do
@@ -40,6 +41,7 @@ control 'docker-4.1' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '4.1'
   tag 'cis-docker-1.13.0': '4.1'
+  tag 'cis-docker-1.2.0': '4.1'
   tag 'level:1'
   ref 'Having non-root privileges on the host and root inside the container', url: 'https://github.com/docker/docker/issues/2918'
   ref 'Support for user namespaces', url: 'https://github.com/docker/docker/pull/4572'
@@ -52,6 +54,7 @@ control 'docker-4.1' do
       its(%w[Config User]) { should eq CONTAINER_USER }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-4.2' do
@@ -64,6 +67,7 @@ control 'docker-4.2' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '4.2'
   tag 'cis-docker-1.13.0': '4.2'
+  tag 'cis-docker-1.2.0': '4.2'
   tag 'level:1'
   ref 'Docker Image Insecurity', url: 'https://titanous.com/posts/docker-insecurity'
   ref 'Docker Hub', url: 'https://hub.docker.com/'
@@ -76,6 +80,7 @@ control 'docker-4.2' do
   describe os_env('DOCKER_CONTENT_TRUST') do
     its('content') { should eq '1' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-4.3' do
@@ -88,6 +93,7 @@ control 'docker-4.3' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '4.3'
   tag 'cis-docker-1.13.0': '4.3'
+  tag 'cis-docker-1.2.0': '4.3'
   tag 'level:1'
   ref 'Get Started, Part 1: Orientation and setup', url: 'https://docs.docker.com/get-started/'
   ref 'Slimming down your Docker containers with Alpine Linux', url: 'http://www.livewyer.com/blog/2015/02/24/slimming-down-your-docker-containers-alpine-linux'
@@ -96,6 +102,7 @@ control 'docker-4.3' do
   describe 'docker-test' do
     skip 'Do not install unnecessary packages in the container'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-4.4' do
@@ -108,6 +115,7 @@ control 'docker-4.4' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '4.4'
   tag 'cis-docker-1.13.0': '4.4'
+  tag 'cis-docker-1.2.0': '4.4'
   tag 'level:1'
   ref 'Get Started, Part 1: Orientation and setup', url: 'https://docs.docker.com/get-started/'
   ref 'Docker Security Scan', url: ' https://docs.docker.com/docker-cloud/builds/image-scan/'
@@ -117,6 +125,7 @@ control 'docker-4.4' do
   describe 'docker-test' do
     skip 'Rebuild the images to include security patches'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-4.5' do
@@ -129,6 +138,7 @@ control 'docker-4.5' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '4.5'
   tag 'cis-docker-1.13.0': '4.5'
+  tag 'cis-docker-1.2.0': '4.5'
   tag 'level:2'
   ref 'Content trust in Docker', url: 'https://docs.docker.com/engine/security/trust/content_trust/'
   ref 'Notary', url: 'https://docs.docker.com/engine/reference/commandline/cli/#notary'
@@ -137,6 +147,7 @@ control 'docker-4.5' do
   describe os_env('DOCKER_CONTENT_TRUST') do
     its('content') { should eq '1' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-4.6' do
@@ -149,6 +160,7 @@ control 'docker-4.6' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '4.6'
   tag 'cis-docker-1.13.0': '4.6'
+  tag 'cis-docker-1.2.0': '4.6'
   tag 'level:1'
   ref 'Add support for user-defined healthchecks', url: 'https://github.com/moby/moby/pull/22719'
 
@@ -157,6 +169,7 @@ control 'docker-4.6' do
       its(%w[Config Healthcheck]) { should_not eq nil }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-4.7' do
@@ -169,6 +182,7 @@ control 'docker-4.7' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '4.7'
   tag 'cis-docker-1.13.0': '4.7'
+  tag 'cis-docker-1.2.0': '4.7'
   tag 'level:1'
   ref 'Best practices for writing Dockerfiles', url: 'https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/'
   ref 'caching and apt-get update', url: 'https://github.com/moby/moby/issues/3313'
@@ -178,6 +192,7 @@ control 'docker-4.7' do
       its('stdout') { should eq '' }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-4.8' do
@@ -190,6 +205,7 @@ control 'docker-4.8' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '4.8'
   tag 'cis-docker-1.13.0': '4.8'
+  tag 'cis-docker-1.2.0': '4.8'
   tag 'level:2'
   ref 'DevSec Linux Baseline', url: 'https://github.com/dev-sec/linux-baseline'
   ref 'Docker Security', url: 'http://www.oreilly.com/webops-perf/free/files/docker-security.pdf'
@@ -200,6 +216,7 @@ control 'docker-4.8' do
   describe 'docker-test' do
     skip 'Use DevSec Linux Baseline in Container'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-4.9' do
@@ -212,6 +229,7 @@ control 'docker-4.9' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '4.9'
   tag 'cis-docker-1.13.0': '4.9'
+  tag 'cis-docker-1.2.0': '4.9'
   tag 'level:1'
   ref 'Best practices for writing Dockerfiles', url: 'https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/'
 
@@ -220,6 +238,7 @@ control 'docker-4.9' do
       its('stdout') { should eq '' }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-4.10' do
@@ -240,6 +259,7 @@ control 'docker-4.10' do
   describe 'docker-test' do
     skip 'Manually verify that you have not used secrets in images'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-4.11' do
@@ -251,6 +271,7 @@ control 'docker-4.11' do
 
   tag 'docker'
   tag 'cis-docker-1.13.0': '4.11'
+  tag 'cis-docker-1.2.0': '4.11'
   tag 'level:1'
   ref 'Docker Security', url: 'http://www.oreilly.com/webops-perf/free/files/docker-security.pdf'
   ref 'Dockerfile HTTPD', url: 'https://github.com/docker-library/httpd/blob/12bf8c8883340c98b3988a7bade8ef2d0d6dcf8a/2.4/Dockerfile'
@@ -260,4 +281,5 @@ control 'docker-4.11' do
   describe 'docker-test' do
     skip 'Manually verify that you installed verified packages'
   end
+  only_if { BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end

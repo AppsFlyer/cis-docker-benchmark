@@ -22,6 +22,8 @@
 
 title 'Docker Security Operations'
 
+BENCHMARK_VERSION ||= attribute('benchmark_version')
+
 # check if docker exists
 only_if('docker not found') do
   command('docker').exist?
@@ -43,6 +45,7 @@ control 'docker-6.1' do
   describe 'docker-test' do
     skip 'Perform regular security audits of your host system and containers'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' }
 end
 
 control 'docker-6.2' do
@@ -69,6 +72,7 @@ control 'docker-6.2' do
   describe 'docker-test' do
     skip 'Monitor Docker containers usage, performance and metering'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' }
 end
 
 control 'docker-6.3' do
@@ -89,6 +93,7 @@ control 'docker-6.3' do
   describe 'docker-test' do
     skip 'Backup container data'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' }
 end
 
 control 'host-6.4' do
@@ -101,6 +106,7 @@ control 'host-6.4' do
   tag 'host'
   tag 'cis-docker-1.12.0': '6.4'
   tag 'cis-docker-1.13.0': '6.4'
+  tag 'cis-docker-1.2.0': '6.1'
   tag 'level:1'
   ref 'Clean up unused Docker Containers and Images', url: 'http://craiccomputing.blogspot.de/2014/09/clean-up-unused-docker-containers-and.html'
   ref 'Command to remove all unused images', url: 'https://forums.docker.com/t/command-to-remove-all-unused-images/20/8'
@@ -115,6 +121,7 @@ control 'host-6.4' do
   describe diff do
     it { should be_empty }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-6.5' do
@@ -127,6 +134,7 @@ control 'host-6.5' do
   tag 'host'
   tag 'cis-docker-1.12.0': '6.5'
   tag 'cis-docker-1.13.0': '6.5'
+  tag 'cis-docker-1.2.0': '6.2'
   tag 'level:1'
   ref 'Security Risks and Benefits of Docker Application Containers', url: 'https://zeltser.com/security-risks-and-benefits-of-docker-application/'
   ref 'Docker networking: How Linux containers will change your network', url: 'http://searchsdn.techtarget.com/feature/Docker-networking-How-Linux-containers-will-change-your-network'
@@ -138,4 +146,5 @@ control 'host-6.5' do
   describe diff do
     it { should be <= MANAGEABLE_CONTAINER_NUMBER }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end

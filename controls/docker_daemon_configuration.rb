@@ -33,6 +33,7 @@ SWARM_MODE = attribute('swarm_mode')
 SWARM_MAX_MANAGER_NODES = attribute('swarm_max_manager_nodes')
 SWARM_PORT = attribute('swarm_port')
 SECCOMP_DEFAULT_PROFILE = attribute('seccomp_default_profile')
+BENCHMARK_VERSION ||= attribute('benchmark_version')
 
 # check if docker exists
 only_if('docker not found') do
@@ -49,12 +50,14 @@ control 'docker-2.1' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.1'
   tag 'cis-docker-1.13.0': '2.1'
+  tag 'cis-docker-1.2.0': '2.1'
   tag 'level:1'
   ref 'Docker container networking', url: 'https://docs.docker.com/engine/userguide/networking/'
 
   describe json('/etc/docker/daemon.json') do
     its(['icc']) { should eq(false) }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.13.0' }
 end
 
 control 'docker-2.2' do
@@ -67,12 +70,14 @@ control 'docker-2.2' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.2'
   tag 'cis-docker-1.13.0': '2.2'
+  tag 'cis-docker-1.2.0': '2.2'
   tag 'level:1'
   ref 'Docker daemon', url: 'https://docs.docker.com/engine/reference/commandline/daemon/'
 
   describe json('/etc/docker/daemon.json') do
     its(['log-level']) { should eq('info') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.13.0' }
 end
 
 control 'docker-2.3' do
@@ -85,12 +90,14 @@ control 'docker-2.3' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.3'
   tag 'cis-docker-1.13.0': '2.3'
+  tag 'cis-docker-1.2.0': '2.3'
   tag 'level:1'
   ref 'Understand container communication', url: 'https://docs.docker.com/engine/userguide/networking/default_network/container-communication/'
 
   describe json('/etc/docker/daemon.json') do
     its(['iptables']) { should eq(true) }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.4' do
@@ -103,12 +110,14 @@ control 'docker-2.4' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.4'
   tag 'cis-docker-1.13.0': '2.4'
+  tag 'cis-docker-1.2.0': '2.4'
   tag 'level:1'
   ref 'Insecure registry', url: 'https://docs.docker.com/registry/insecure/'
 
   describe json('/etc/docker/daemon.json') do
     its(['insecure-registries']) { should be_empty }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
 end
 
 control 'docker-2.5' do
@@ -121,6 +130,7 @@ control 'docker-2.5' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.5'
   tag 'cis-docker-1.13.0': '2.5'
+  tag 'cis-docker-1.2.0': '2.5'
   tag 'level:1'
   ref 'Docker daemon storage driver options', url: 'https://docs.docker.com/engine/reference/commandline/cli/#daemon-storage-driver-option'
   ref 'Switch from aufs to devicemapper', url: 'http://muehe.org/posts/switching-docker-from-aufs-to-devicemapper/'
@@ -130,6 +140,7 @@ control 'docker-2.5' do
   describe json('/etc/docker/daemon.json') do
     its(['storage-driver']) { should_not eq('aufs') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
 end
 
 control 'docker-2.6' do
@@ -142,6 +153,7 @@ control 'docker-2.6' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.6'
   tag 'cis-docker-1.13.0': '2.6'
+  tag 'cis-docker-1.2.0': '2.6'
   tag 'level:1'
   ref 'Protect Docker deamon socket', url: 'https://docs.docker.com/engine/security/https/'
 
@@ -152,6 +164,7 @@ control 'docker-2.6' do
     its(['tlscert']) { should eq(DAEMON_TLSCERT) }
     its(['tlskey']) { should eq(DAEMON_TLSKEY) }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.7' do
@@ -164,6 +177,7 @@ control 'docker-2.7' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.7'
   tag 'cis-docker-1.13.0': '2.7'
+  tag 'cis-docker-1.2.0': '2.7'
   tag 'level:1'
   ref 'Docker daemon deafult ulimits', url: 'https://docs.docker.com/engine/reference/commandline/daemon/#default-ulimits'
 
@@ -171,6 +185,7 @@ control 'docker-2.7' do
     its(['default-ulimits', 'nproc']) { should eq('1024:2408') }
     its(['default-ulimits', 'nofile']) { should eq('100': '200') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.8' do
@@ -183,6 +198,7 @@ control 'docker-2.8' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.8'
   tag 'cis-docker-1.13.0': '2.8'
+  tag 'cis-docker-1.2.0': '2.8'
   tag 'level:2'
   ref 'User namespeces', url: 'http://man7.org/linux/man-pages/man7/user_namespaces.7.html'
   ref 'Docker daemon configuration', url: 'https://docs.docker.com/engine/reference/commandline/daemon/'
@@ -200,6 +216,7 @@ control 'docker-2.8' do
     it { should exist }
     it { should be_file }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.9' do
@@ -212,12 +229,14 @@ control 'docker-2.9' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.9'
   tag 'cis-docker-1.13.0': '2.9'
+  tag 'cis-docker-1.2.0': '2.9'
   tag 'level:2'
   ref 'Docker daemon configuration', url: 'https://docs.docker.com/engine/reference/commandline/daemon/'
 
   describe json('/etc/docker/daemon.json') do
     its(['cgroup-parent']) { should eq('docker') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.10' do
@@ -230,12 +249,14 @@ control 'docker-2.10' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.10'
   tag 'cis-docker-1.13.0': '2.10'
+  tag 'cis-docker-1.2.0': '2.10'
   tag 'level:2'
   ref 'Docker daemon storage driver options', url: 'https://docs.docker.com/engine/reference/commandline/daemon/#storage-driver-options'
 
   describe json('/etc/docker/daemon.json') do
     its(['storage-opts']) { should eq(['dm.basesize=10G']) }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.11' do
@@ -248,6 +269,7 @@ control 'docker-2.11' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.11'
   tag 'cis-docker-1.13.0': '2.11'
+  tag 'cis-docker-1.2.0': '2.11'
   tag 'level:2'
   ref 'Access authorization', url: 'https://docs.docker.com/engine/reference/commandline/daemon/#access-authorization'
   ref 'Auhtorization plugins', url: 'https://docs.docker.com/engine/extend/plugins_authorization/'
@@ -257,6 +279,7 @@ control 'docker-2.11' do
     its(['authorization-plugins']) { should_not be_empty }
     its(['authorization-plugins']) { should eq([AUTHORIZATION_PLUGIN]) }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.12' do
@@ -269,6 +292,7 @@ control 'docker-2.12' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.12'
   tag 'cis-docker-1.13.0': '2.12'
+  tag 'cis-docker-1.2.0': '2.12'
   tag 'level:2'
   ref 'Logging overview', url: 'https://docs.docker.com/engine/admin/logging/overview/'
 
@@ -277,6 +301,7 @@ control 'docker-2.12' do
     its(['log-driver']) { should eq(LOG_DRIVER) }
     its(['log-opts']) { should include(LOG_OPTS) }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.13' do
@@ -302,6 +327,7 @@ control 'docker-2.13' do
   describe json('/etc/docker/daemon.json') do
     its(['disable-legacy-registry']) { should eq(true) }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' }
 end
 
 control 'docker-2.14' do
@@ -314,12 +340,14 @@ control 'docker-2.14' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.14'
   tag 'cis-docker-1.13.0': '2.14'
+  tag 'cis-docker-1.2.0': '2.13'
   tag 'level:1'
   ref 'Add --live-restore flag', url: 'https://github.com/docker/docker/pull/23213'
 
   describe json('/etc/docker/daemon.json') do
     its(['live-restore']) { should eq(true) }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.12.0' }
 end
 
 control 'docker-2.15' do
@@ -332,12 +360,14 @@ control 'docker-2.15' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.15'
   tag 'cis-docker-1.13.0': '2.15'
+  tag 'cis-docker-1.2.0': '7.1'
   tag 'level:1'
   ref 'docker swarm init', url: 'https://docs.docker.com/engine/reference/commandline/swarm_init/'
 
   describe docker.info do
     its('Swarm.LocalNodeState') { should eq SWARM_MODE }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.16' do
@@ -350,6 +380,7 @@ control 'docker-2.16' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.16'
   tag 'cis-docker-1.13.0': '2.16'
+  tag 'cis-docker-1.2.0': '7.2'
   tag 'level:1'
   ref 'Manage nodes in a swarm', url: 'https://docs.docker.com/engine/swarm/manage-nodes/'
   ref 'Administer and maintain a swarm of Docker Engines', url: 'https://docs.docker.com/engine/swarm/admin_guide/'
@@ -358,6 +389,7 @@ control 'docker-2.16' do
   describe docker.info do
     its('Swarm.Managers') { should cmp <= SWARM_MAX_MANAGER_NODES }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.17' do
@@ -370,6 +402,7 @@ control 'docker-2.17' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.17'
   tag 'cis-docker-1.13.0': '2.17'
+  tag 'cis-docker-1.2.0': '7.3'
   tag 'level:1'
   ref 'docker swarm init', url: 'https://docs.docker.com/engine/reference/commandline/swarm_init/'
   ref 'Administer and maintain a swarm of Docker Engines', url: 'https://docs.docker.com/engine/swarm/admin_guide/'
@@ -379,6 +412,7 @@ control 'docker-2.17' do
     its('addresses') { should_not include '0.0.0.0' }
     its('addresses') { should_not include '::' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.18' do
@@ -391,6 +425,7 @@ control 'docker-2.18' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '2.18'
   tag 'cis-docker-1.13.0': '2.18'
+  tag 'cis-docker-1.2.0': '2.14'
   tag 'level:1'
   ref 'The docker-proxy', url: 'http://windsock.io/the-docker-proxy/'
   ref 'Disable Userland proxy by default', url: 'https://github.com/docker/docker/issues/14856'
@@ -403,6 +438,7 @@ control 'docker-2.18' do
   describe processes('dockerd').commands do
     it { should include 'userland-proxy=false' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.19' do
@@ -414,6 +450,7 @@ control 'docker-2.19' do
 
   tag 'docker'
   tag 'cis-docker-1.13.0': '2.19'
+  tag 'cis-docker-1.2.0': '7.4'
   tag 'level:1'
   ref 'Docker swarm mode overlay network security model', url: 'https://docs.docker.com/engine/userguide/networking/overlay-security-model/'
   ref 'Docker swarm container-container traffic not encrypted when inspecting externally with tcpdump', url: 'https://github.com/moby/moby/issues/24253'
@@ -430,6 +467,7 @@ control 'docker-2.19' do
       skip 'Cannot determine overlay networks'
     end
   end
+  only_if { BENCHMARK_VERSION == '1.13.0'|| BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.20' do
@@ -441,6 +479,7 @@ control 'docker-2.20' do
 
   tag 'docker'
   tag 'cis-docker-1.13.0': '2.20'
+  tag 'cis-docker-1.2.0': '2.15'
   tag 'level:2'
   ref 'daemon: add a flag to override the default seccomp profile', url: 'https://github.com/moby/moby/pull/26276'
 
@@ -448,6 +487,7 @@ control 'docker-2.20' do
     its(['seccomp-profile']) { should_not eq(nil) }
     its(['seccomp-profile']) { should eq(SECCOMP_DEFAULT_PROFILE) }
   end
+  only_if { BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.21' do
@@ -459,6 +499,7 @@ control 'docker-2.21' do
 
   tag 'docker'
   tag 'cis-docker-1.13.0': '2.21'
+  tag 'cis-docker-1.2.0': '2.16'
   tag 'level:1'
   ref 'Changing the definition of experimental', url: 'https://github.com/moby/moby/issues/26713'
   ref 'Make experimental a runtime flag', url: 'https://github.com/moby/moby/pull/27223'
@@ -466,6 +507,7 @@ control 'docker-2.21' do
   describe command('docker version --format \'{{ .Server.Experimental }}\'').stdout.chomp do
     it { should eq('false') }
   end
+  only_if { BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.22' do
@@ -477,6 +519,7 @@ control 'docker-2.22' do
 
   tag 'docker'
   tag 'cis-docker-1.13.0': '2.22'
+  tag 'cis-docker-1.2.0': '7.5'
   tag 'level:2'
   ref 'Secret Management', url: 'https://github.com/moby/moby/pull/27794'
 
@@ -484,6 +527,7 @@ control 'docker-2.22' do
   describe command('docker secret ls -q').stdout.split("\n").length do
     it { should be > 0 }
   end
+  only_if { BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.23' do
@@ -495,6 +539,7 @@ control 'docker-2.23' do
 
   tag 'docker'
   tag 'cis-docker-1.13.0': '2.23'
+  tag 'cis-docker-1.2.0': '7.6'
   tag 'level:1'
   ref 'Initialize a swarm with autolocking enabled', url: 'https://github.com/mistyhacks/docker.github.io/blob/af7dfdba8504f9b102fb31a78cd08a06c33a8975/engine/swarm/swarm_manager_locking.md'
 
@@ -502,6 +547,7 @@ control 'docker-2.23' do
   describe command('docker swarm unlock-key -q').stdout.chomp.length do
     it { should be > 0 }
   end
+  only_if { BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.24' do
@@ -515,6 +561,32 @@ control 'docker-2.24' do
 
   tag 'docker'
   tag 'cis-docker-1.13.0': '2.24'
+  tag 'cis-docker-1.2.0': '7.7'
   tag 'level:1'
   ref 'Swarm Key rotation', url: 'https://github.com/mistyhacks/docker.github.io/blob/af7dfdba8504f9b102fb31a78cd08a06c33a8975/engine/swarm/swarm_manager_locking.md'
+  only_if { BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
+end
+
+
+control 'docker-2.25' do
+  impact 1.0
+  title 'Ensure containers are restricted from acquiring new privileges'
+  desc 'By default you should restrict containers from acquiring additional privileges via suid or sgid.
+
+  Rationale: A process can set the no_new_priv bit in the kernel and this persists across forks, clones and execve. The no_new_priv bit ensures that the process and its child processes do not gain any additional privileges via suid or sgid bits. This reduces the security risks associated with many dangerous operations because there is a much reduced ability to subvert privileged binaries. Setting this at the daemon level ensures that by default all new containers are restricted from acquiring new privileges.'
+
+  tag 'docker'
+  tag 'cis-docker-1.2.0': '2.17'
+  tag 'level:1'
+  ref 'add daemon flag to set no_new_priv as default for unprivileged containers', url: 'https://github.com/moby/moby/pull/29984'
+  ref 'Add support for NoNewPrivileges in docker', url: 'https://github.com/moby/moby/pull/20727'
+
+  describe json('/etc/docker/daemon.json') do
+    its('no-new-privileges') { should eq true }
+  end
+  describe processes('dockerd').commands do
+    it { should include '--no-new-privileges' }
+  end
+
+  only_if { BENCHMARK_VERSION == '1.2.0' }
 end

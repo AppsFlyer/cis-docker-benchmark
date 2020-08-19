@@ -26,6 +26,7 @@ title 'Docker Daemon Configuration Files'
 REGISTRY_CERT_PATH = attribute('registry_cert_path')
 REGISTRY_NAME = attribute('registry_name')
 REGISTRY_CA_FILE = attribute('registry_ca_file')
+BENCHMARK_VERSION ||= attribute('benchmark_version')
 
 # check if docker exists
 only_if('docker not found') do
@@ -42,6 +43,7 @@ control 'docker-3.1' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.1'
   tag 'cis-docker-1.13.0': '3.1'
+  tag 'cis-docker-1.2.0': '3.1'
   tag 'level:1'
   ref 'Control and configure Docker with systemd', url: 'https://docs.docker.com/engine/admin/systemd/'
 
@@ -51,6 +53,7 @@ control 'docker-3.1' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.2' do
@@ -63,6 +66,7 @@ control 'docker-3.2' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.2'
   tag 'cis-docker-1.13.0': '3.2'
+  tag 'cis-docker-1.2.0': '3.2'
   tag 'level:1'
   ref 'Control and configure Docker with systemd', url: 'https://docs.docker.com/engine/admin/systemd/'
 
@@ -77,6 +81,7 @@ control 'docker-3.2' do
     it { should_not be_writable.by('other') }
     it { should_not be_executable }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.3' do
@@ -89,6 +94,7 @@ control 'docker-3.3' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.3'
   tag 'cis-docker-1.13.0': '3.3'
+  tag 'cis-docker-1.2.0': '3.3'
   tag 'level:1'
   ref 'Dockerd', url: 'https://docs.docker.com/engine/reference/commandline/dockerd/'
   ref 'YungSang/fedora-atomic-packer', url: 'https://github.com/YungSang/fedora-atomic-packer/blob/master/oem/docker.socket'
@@ -100,6 +106,7 @@ control 'docker-3.3' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.4' do
@@ -112,6 +119,7 @@ control 'docker-3.4' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.4'
   tag 'cis-docker-1.13.0': '3.4'
+  tag 'cis-docker-1.2.0': '3.4'
   tag 'level:1'
   ref 'Dockerd', url: 'https://docs.docker.com/engine/reference/commandline/dockerd/'
   ref 'YungSang/fedora-atomic-packer', url: 'https://github.com/YungSang/fedora-atomic-packer/blob/master/oem/docker.socket'
@@ -128,6 +136,7 @@ control 'docker-3.4' do
     it { should_not be_writable.by('other') }
     it { should_not be_executable }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.5' do
@@ -140,6 +149,7 @@ control 'docker-3.5' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.5'
   tag 'cis-docker-1.13.0': '3.5'
+  tag 'cis-docker-1.2.0': '3.5'
   tag 'level:1'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
 
@@ -149,6 +159,7 @@ control 'docker-3.5' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.6' do
@@ -161,6 +172,7 @@ control 'docker-3.6' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.6'
   tag 'cis-docker-1.13.0': '3.6'
+  tag 'cis-docker-1.2.0': '3.6'
   tag 'level:1'
   ref 'Docker Security', url: 'https://docs.docker.com/engine/security/security/#conclusions'
 
@@ -177,6 +189,7 @@ control 'docker-3.6' do
     it { should_not be_writable.by('other') }
     it { should be_executable.by('other') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.7' do
@@ -189,6 +202,7 @@ control 'docker-3.7' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.7'
   tag 'cis-docker-1.13.0': '3.7'
+  tag 'cis-docker-1.2.0': '3.7'
   tag 'level:1'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
   ref 'Verify repository client with certificates', url: 'https://docs.docker.com/engine/security/certificates/'
@@ -214,6 +228,7 @@ control 'docker-3.7' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.8' do
@@ -226,6 +241,7 @@ control 'docker-3.8' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.8'
   tag 'cis-docker-1.13.0': '3.8'
+  tag 'cis-docker-1.2.0': '3.8'
   tag 'level:1'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
   ref 'Verify repository client with certificates', url: 'https://docs.docker.com/engine/security/certificates/'
@@ -238,6 +254,7 @@ control 'docker-3.8' do
     it { should_not be_executable }
     it { should_not be_writable }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.9' do
@@ -250,6 +267,7 @@ control 'docker-3.9' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.9'
   tag 'cis-docker-1.13.0': '3.9'
+  tag 'cis-docker-1.2.0': '3.9'
   tag 'level:1'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
   ref 'Verify repository client with certificates', url: 'https://docs.docker.com/engine/security/certificates/'
@@ -261,6 +279,7 @@ control 'docker-3.9' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.10' do
@@ -273,6 +292,7 @@ control 'docker-3.10' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.10'
   tag 'cis-docker-1.13.0': '3.10'
+  tag 'cis-docker-1.2.0': '3.10'
   tag 'level:1'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
   ref 'Verify repository client with certificates', url: 'https://docs.docker.com/engine/security/certificates/'
@@ -285,6 +305,7 @@ control 'docker-3.10' do
     it { should_not be_executable }
     it { should_not be_writable }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.11' do
@@ -297,6 +318,7 @@ control 'docker-3.11' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.11'
   tag 'cis-docker-1.13.0': '3.11'
+  tag 'cis-docker-1.2.0': '3.11'
   tag 'level:1'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
   ref 'Verify repository client with certificates', url: 'https://docs.docker.com/engine/security/certificates/'
@@ -308,6 +330,7 @@ control 'docker-3.11' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.12' do
@@ -320,6 +343,7 @@ control 'docker-3.12' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.12'
   tag 'cis-docker-1.13.0': '3.12'
+  tag 'cis-docker-1.2.0': '3.12'
   tag 'level:1'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
   ref 'Verify repository client with certificates', url: 'https://docs.docker.com/engine/security/certificates/'
@@ -332,6 +356,7 @@ control 'docker-3.12' do
     it { should_not be_executable }
     it { should_not be_writable }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.13' do
@@ -344,6 +369,7 @@ control 'docker-3.13' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.13'
   tag 'cis-docker-1.13.0': '3.13'
+  tag 'cis-docker-1.2.0': '3.13'
   tag 'level:1'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
   ref 'Verify repository client with certificates', url: 'https://docs.docker.com/engine/security/certificates/'
@@ -355,11 +381,12 @@ control 'docker-3.13' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.14' do
   impact 1.0
-  title 'Verify that Docker server certificate key file permissions are set to 444 or more restrictive'
+  title 'Verify that Docker server certificate key file permissions are set to 400 or more restrictive'
   desc 'Verify that the Docker server certificate key file (the file that is passed alongwith \'--tlskey\' parameter) has permissions of \'400\'.
 
   Rationale: The Docker server certificate key file should be protected from any tampering or unneeded reads. It holds the private key for the Docker server certificate. Hence, it must have permissions of \'400\' to maintain the integrity of the Docker server certificate.'
@@ -367,6 +394,7 @@ control 'docker-3.14' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.14'
   tag 'cis-docker-1.13.0': '3.14'
+  tag 'cis-docker-1.2.0': '3.14'
   tag 'level:1'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
   ref 'Verify repository client with certificates', url: 'https://docs.docker.com/engine/security/certificates/'
@@ -375,10 +403,9 @@ control 'docker-3.14' do
   describe file(json('/etc/docker/daemon.json').params['tlskey']) do
     it { should exist }
     it { should be_file }
-    it { should be_readable }
-    it { should_not be_executable }
-    it { should_not be_writable }
+    its('mode') { should cmp '0400' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
 end
 
 control 'docker-3.15' do
@@ -391,6 +418,7 @@ control 'docker-3.15' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.15'
   tag 'cis-docker-1.13.0': '3.15'
+  tag 'cis-docker-1.2.0': '3.15'
   tag 'level:1'
   ref 'Use the Docker command line', url: 'https://docs.docker.com/engine/reference/commandline/cli/#daemon-socket-option'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
@@ -401,6 +429,7 @@ control 'docker-3.15' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'docker' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.16' do
@@ -413,6 +442,7 @@ control 'docker-3.16' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.16'
   tag 'cis-docker-1.13.0': '3.16'
+  tag 'cis-docker-1.2.0': '3.16'
   tag 'level:1'
   ref 'Use the Docker command line', url: 'https://docs.docker.com/engine/reference/commandline/cli/#daemon-socket-option'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
@@ -430,6 +460,7 @@ control 'docker-3.16' do
     it { should_not be_writable.by('other') }
     it { should_not be_executable.by('other') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.17' do
@@ -442,6 +473,7 @@ control 'docker-3.17' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.17'
   tag 'cis-docker-1.13.0': '3.17'
+  tag 'cis-docker-1.2.0': '3.17'
   tag 'level:1'
   ref 'dockerd', url: 'https://docs.docker.com/engine/reference/commandline/dockerd/#miscellaneous-options'
 
@@ -451,6 +483,7 @@ control 'docker-3.17' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.18' do
@@ -463,6 +496,7 @@ control 'docker-3.18' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.18'
   tag 'cis-docker-1.13.0': '3.18'
+  tag 'cis-docker-1.2.0': '3.18'
   tag 'level:1'
   ref 'Use the Docker command line', url: 'https://docs.docker.com/engine/reference/commandline/cli/#daemon-socket-option'
   ref 'Protect the Docker daemon socket', url: 'https://docs.docker.com/engine/security/https/'
@@ -481,6 +515,7 @@ control 'docker-3.18' do
     it { should_not be_writable.by('other') }
     it { should_not be_executable.by('other') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.19' do
@@ -493,6 +528,7 @@ control 'docker-3.19' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.19'
   tag 'cis-docker-1.13.0': '3.19'
+  tag 'cis-docker-1.2.0': '3.19'
   tag 'level:1'
   ref 'Configure and troubleshoot the Docker daemon', url: 'https://docs.docker.com/engine/admin/'
 
@@ -503,6 +539,7 @@ control 'docker-3.19' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.20' do
@@ -515,6 +552,7 @@ control 'docker-3.20' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.20'
   tag 'cis-docker-1.13.0': '3.20'
+  tag 'cis-docker-1.2.0': '3.22'
   tag 'level:1'
   ref 'Configure and troubleshoot the Docker daemon', url: 'https://docs.docker.com/engine/admin/'
 
@@ -532,4 +570,57 @@ control 'docker-3.20' do
     it { should_not be_writable.by('other') }
     it { should_not be_executable.by('other') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
+end
+
+control 'docker-3.21' do
+  impact 1.0
+  title 'Verify that /etc/sysconfig/docker file ownership is set to root:root'
+  desc 'You should verify that the /etc/sysconfig/docker file individual ownership and group ownership is correctly set to root.
+
+  Rationale: The /etc/sysconfig/docker file contains sensitive parameters that may alter the behavior of the Docker daemon. It should therefore be individually owned and group owned by root to ensure that it is not modified by less privileged users.'
+
+  tag 'docker'
+  tag 'cis-docker-1.2.0': '3.20'
+  tag 'level:1'
+  ref 'Configure and troubleshoot the Docker daemon', url: 'https://docs.docker.com/engine/admin/'
+
+  describe file('/etc/sysconfig/docker') do
+    it { should exist }
+    it { should be_file }
+    it { should be_owned_by 'root' }
+    it { should be_grouped_into 'root' }
+  end
+  only_if { file('/etc/sysconfig/docker').exist? && \
+  (BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0') }
+end
+
+
+control 'docker-3.22' do
+  impact 1.0
+  title 'Verify that /etc/sysconfig/docker file permissions are set to 644 or more restrictive'
+  desc 'You should verify that the /etc/sysconfig/docker file permissions are correctly set to 644 or more restrictively.
+
+  Rationale: The /etc/sysconfig/docker file contains sensitive parameters that may alter the behavior of the Docker daemon. It should therefore be writeable only by root in order to ensure that it is not modified by less privileged users.'
+
+  tag 'docker'
+  tag 'cis-docker-1.2.0': '3.21'
+  tag 'level:1'
+  ref 'Configure and troubleshoot the Docker daemon', url: 'https://docs.docker.com/engine/admin/'
+
+  describe file('/etc/sysconfig/docker') do
+    it { should exist }
+    it { should be_file }
+    it { should be_readable.by('owner') }
+    it { should be_writable.by('owner') }
+    it { should_not be_executable.by('owner') }
+    it { should be_readable.by('group') }
+    it { should_not be_writable.by('group') }
+    it { should_not be_executable.by('group') }
+    it { should be_readable.by('other') }
+    it { should_not be_writable.by('other') }
+    it { should_not be_executable.by('other') }
+  end
+  only_if { file('/etc/sysconfig/docker').exist? && \
+            (BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0') }
 end

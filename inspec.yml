@@ -43,7 +43,7 @@ attributes:
       required: true
       description: 'to execute also the old controls from previous benchmarks. to execute the controls, define the value as 1.12.0'
       type: string
-      value: 1.12.0
+      value: 1.2.0
     - name: registry_cert_path
       required: true
       description: 'directory contains various Docker registry directories.'

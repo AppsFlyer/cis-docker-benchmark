@@ -26,6 +26,7 @@ title 'Container Runtime'
 CONTAINER_CAPADD = attribute('container_capadd')
 APP_ARMOR_PROFILE = attribute('app_armor_profile')
 SELINUX_PROFILE = attribute('selinux_profile')
+BENCHMARK_VERSION ||= attribute('benchmark_version')
 
 # check if docker exists
 only_if('docker not found') do
@@ -42,6 +43,7 @@ control 'docker-5.1' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.1'
   tag 'cis-docker-1.13.0': '5.1'
+  tag 'cis-docker-1.2.0': '5.1'
   tag 'level:1'
   ref 'Docker Security', url: 'https://docs.docker.com/engine/security/security/'
   ref 'Secure Engine', url: 'https://docs.docker.com/engine/security/'
@@ -54,6 +56,7 @@ control 'docker-5.1' do
       its(['AppArmorProfile']) { should_not eq nil }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.2' do
@@ -66,6 +69,7 @@ control 'docker-5.2' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.2'
   tag 'cis-docker-1.13.0': '5.2'
+  tag 'cis-docker-1.2.0': '5.2'
   tag 'level:2'
   ref 'Docker Security', url: 'https://docs.docker.com/engine/security/security/'
   ref 'Secure Engine', url: 'https://docs.docker.com/engine/security/'
@@ -85,6 +89,7 @@ control 'docker-5.2' do
       its(%w[HostConfig SecurityOpt]) { should include(SELINUX_PROFILE) }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.3' do
@@ -99,6 +104,7 @@ control 'docker-5.3' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.3'
   tag 'cis-docker-1.13.0': '5.3'
+  tag 'cis-docker-1.2.0': '5.3'
   tag 'level:1'
   ref 'Docker Security', url: 'https://docs.docker.com/engine/security/security/'
   ref 'Secure Engine', url: 'https://docs.docker.com/engine/security/'
@@ -112,6 +118,7 @@ control 'docker-5.3' do
       its(%w[HostConfig CapAdd]) { should eq CONTAINER_CAPADD }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.4' do
@@ -124,6 +131,7 @@ control 'docker-5.4' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.4'
   tag 'cis-docker-1.13.0': '5.4'
+  tag 'cis-docker-1.2.0': '5.4'
   tag 'level:1'
   ref 'Use the Docker command line', url: 'https://docs.docker.com/engine/reference/commandline/cli/'
 
@@ -133,6 +141,7 @@ control 'docker-5.4' do
       its(%w[HostConfig Privileged]) { should_not eq true }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.5' do
@@ -145,6 +154,7 @@ control 'docker-5.5' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.5'
   tag 'cis-docker-1.13.0': '5.5'
+  tag 'cis-docker-1.2.0': '5.5'
   tag 'level:1'
   ref 'Use volumes', url: 'https://docs.docker.com/engine/admin/volumes/volumes/'
 
@@ -163,6 +173,7 @@ control 'docker-5.5' do
       end
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.6' do
@@ -181,6 +192,7 @@ control 'docker-5.6' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.6'
   tag 'cis-docker-1.13.0': '5.6'
+  tag 'cis-docker-1.2.0': '5.6'
   tag 'level:1'
   ref 'Why you don\'t need to run SSHd in your Docker containers', url: 'https://blog.docker.com/2014/06/why-you-dont-need-to-run-sshd-in-docker/'
 
@@ -190,6 +202,7 @@ control 'docker-5.6' do
       its('stdout') { should_not match(/ssh/) }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.7' do
@@ -202,6 +215,7 @@ control 'docker-5.7' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.7'
   tag 'cis-docker-1.13.0': '5.7'
+  tag 'cis-docker-1.2.0': '5.7'
   tag 'level:1'
   ref 'Bind container ports to the host', url: 'https://docs.docker.com/engine/userguide/networking/default_network/binding/'
   ref 'Why putting SSH on another port than 22 is bad idea', url: 'https://www.adayinthelifeof.nl/2012/03/12/why-putting-ssh-on-another-port-than-22-is-bad-idea/'
@@ -218,6 +232,7 @@ control 'docker-5.7' do
       end
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.8' do
@@ -230,8 +245,10 @@ control 'docker-5.8' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.8'
   tag 'cis-docker-1.13.0': '5.8'
+  tag 'cis-docker-1.2.0': '5.8'
   tag 'level:1'
   ref 'Bind container ports to the host', url: 'https://docs.docker.com/engine/userguide/networking/default_network/binding/'
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.9' do
@@ -244,6 +261,7 @@ control 'docker-5.9' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.9'
   tag 'cis-docker-1.13.0': '5.9'
+  tag 'cis-docker-1.2.0': '5.9'
   tag 'level:1'
   ref 'Docker container networking', url: 'https://docs.docker.com/engine/userguide/networking/'
   ref 'Rebooting within docker container actually reboots the host', url: 'https://github.com/docker/docker/issues/6401'
@@ -253,6 +271,7 @@ control 'docker-5.9' do
       its(%w[HostConfig NetworkMode]) { should_not eq 'host' }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.10' do
@@ -265,6 +284,7 @@ control 'docker-5.10' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.10'
   tag 'cis-docker-1.13.0': '5.10'
+  tag 'cis-docker-1.2.0': '5.10'
   tag 'level:1'
   ref 'Resource management in Docker', url: 'https://goldmann.pl/blog/2014/09/11/resource-management-in-docker/'
   ref 'Use the Docker command line', url: 'https://docs.docker.com/engine/reference/commandline/cli/'
@@ -275,6 +295,7 @@ control 'docker-5.10' do
       its(%w[HostConfig Memory]) { should_not eq 0 }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.11' do
@@ -287,6 +308,7 @@ control 'docker-5.11' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.11'
   tag 'cis-docker-1.13.0': '5.11'
+  tag 'cis-docker-1.2.0': '5.11'
   tag 'level:1'
   ref 'Resource management in Docker', url: 'https://goldmann.pl/blog/2014/09/11/resource-management-in-docker/'
   ref 'Use the Docker command line', url: 'https://docs.docker.com/engine/reference/commandline/cli/'
@@ -298,6 +320,7 @@ control 'docker-5.11' do
       its(%w[HostConfig CpuShares]) { should_not eq 1024 }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.12' do
@@ -315,6 +338,7 @@ control 'docker-5.12' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.12'
   tag 'cis-docker-1.13.0': '5.12'
+  tag 'cis-docker-1.2.0': '5.12'
   tag 'level:1'
   ref 'Use the Docker command line', url: 'https://docs.docker.com/engine/reference/commandline/cli/'
 
@@ -323,6 +347,7 @@ control 'docker-5.12' do
       its(%w[HostConfig ReadonlyRootfs]) { should eq true }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.13' do
@@ -335,6 +360,7 @@ control 'docker-5.13' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.13'
   tag 'cis-docker-1.13.0': '5.13'
+  tag 'cis-docker-1.2.0': '5.13'
   tag 'level:1'
   ref 'Docker container networking', url: 'https://docs.docker.com/engine/userguide/networking/'
 
@@ -350,6 +376,7 @@ control 'docker-5.13' do
       end
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.14' do
@@ -362,6 +389,7 @@ control 'docker-5.14' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.14'
   tag 'cis-docker-1.13.0': '5.14'
+  tag 'cis-docker-1.2.0': '5.14'
   tag 'level:1'
   ref 'Start containers automatically', url: 'https://docs.docker.com/engine/admin/start-containers-automatically/'
 
@@ -376,6 +404,7 @@ control 'docker-5.14' do
       end
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.15' do
@@ -388,6 +417,7 @@ control 'docker-5.15' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.15'
   tag 'cis-docker-1.13.0': '5.15'
+  tag 'cis-docker-1.2.0': '5.15'
   tag 'level:1'
   ref 'PID settings (–pid)', url: 'https://docs.docker.com/engine/reference/run/#pid-equivalent'
   ref 'pid_namespaces - overview of Linux PID namespaces', url: 'http://man7.org/linux/man-pages/man7/pid_namespaces.7.html'
@@ -397,6 +427,7 @@ control 'docker-5.15' do
       its(%w[HostConfig PidMode]) { should_not eq 'host' }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.16' do
@@ -409,6 +440,7 @@ control 'docker-5.16' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.16'
   tag 'cis-docker-1.13.0': '5.16'
+  tag 'cis-docker-1.2.0': '5.16'
   tag 'level:1'
   ref 'IPC settings (–ipc)', url: 'https://docs.docker.com/engine/reference/run/#ipc-settings---ipc'
   ref 'namespaces - overview of Linux namespaces', url: 'http://man7.org/linux/man-pages/man7/namespaces.7.html'
@@ -418,6 +450,7 @@ control 'docker-5.16' do
       its(%w[HostConfig IpcMode]) { should_not eq 'host' }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.17' do
@@ -434,6 +467,7 @@ control 'docker-5.17' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.17'
   tag 'cis-docker-1.13.0': '5.17'
+  tag 'cis-docker-1.2.0': '5.17'
   tag 'level:1'
   ref 'Use the Docker command line', url: 'https://docs.docker.com/engine/reference/commandline/cli/'
 
@@ -442,6 +476,7 @@ control 'docker-5.17' do
       its(%w[HostConfig Devices]) { should be_empty }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.18' do
@@ -454,6 +489,7 @@ control 'docker-5.18' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.18'
   tag 'cis-docker-1.13.0': '5.18'
+  tag 'cis-docker-1.2.0': '5.18'
   tag 'level:1'
   ref 'docker run', url: 'https://docs.docker.com/engine/reference/commandline/run/'
   ref 'Command: man setrlimit'
@@ -464,6 +500,7 @@ control 'docker-5.18' do
       its(%w[HostConfig Ulimits]) { should eq nil }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.19' do
@@ -476,6 +513,7 @@ control 'docker-5.19' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.19'
   tag 'cis-docker-1.13.0': '5.19'
+  tag 'cis-docker-1.2.0': '5.19'
   tag 'level:1'
   ref 'Capability to specify per volume mount propagation mode', url: 'https://github.com/docker/docker/pull/17034'
   ref 'Docker run reference', url: 'https://docs.docker.com/engine/reference/run/'
@@ -487,6 +525,7 @@ control 'docker-5.19' do
       it { should_not eq 'shared' }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.20' do
@@ -499,6 +538,7 @@ control 'docker-5.20' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.20'
   tag 'cis-docker-1.13.0': '5.20'
+  tag 'cis-docker-1.2.0': '5.20'
   tag 'level:1'
   ref 'Docker run reference', url: 'https://docs.docker.com/engine/reference/run/'
   ref 'namespaces - overview of Linux namespaces', url: ' http://man7.org/linux/man-pages/man7/namespaces.7.html'
@@ -508,6 +548,7 @@ control 'docker-5.20' do
       its(%w[HostConfig UTSMode]) { should_not eq 'host' }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.21' do
@@ -520,6 +561,7 @@ control 'docker-5.21' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.21'
   tag 'cis-docker-1.13.0': '5.21'
+  tag 'cis-docker-1.2.0': '5.21'
   tag 'level:1'
   ref 'New Docker Security Features and What They Mean: Seccomp Profiles', url: 'http://blog.aquasec.com/new-docker-security-features-and-what-they-mean-seccomp-profiles'
   ref 'Docker run reference', url: 'https://docs.docker.com/engine/reference/run/'
@@ -534,6 +576,7 @@ control 'docker-5.21' do
       its(%w[HostConfig SecurityOpt]) { should_not include(/seccomp[=|:]unconfined/) }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.22' do
@@ -546,12 +589,14 @@ control 'docker-5.22' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.22'
   tag 'cis-docker-1.13.0': '5.22'
+  tag 'cis-docker-1.2.0': '5.22'
   tag 'level:2'
   ref 'docker exec', url: 'https://docs.docker.com/engine/reference/commandline/exec/'
 
   describe command('ausearch --input-logs -k docker | grep exec | grep privileged').stdout do
     it { should be_empty }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.23' do
@@ -564,12 +609,14 @@ control 'docker-5.23' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.23'
   tag 'cis-docker-1.13.0': '5.23'
+  tag 'cis-docker-1.2.0': '5.23'
   tag 'level:2'
   ref 'docker exec', url: 'https://docs.docker.com/engine/reference/commandline/exec/'
 
   describe command('ausearch --input-logs -k docker | grep exec | grep user').stdout do
     it { should be_empty }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.24' do
@@ -582,6 +629,7 @@ control 'docker-5.24' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.24'
   tag 'cis-docker-1.13.0': '5.24'
+  tag 'cis-docker-1.2.0': '5.24'
   tag 'level:1'
   ref 'Specify custom cgroups', url: 'https://docs.docker.com/engine/reference/run/'
   ref 'Chapter 1. Introduction to Control Groups (Cgroups)', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/ch01.html'
@@ -591,6 +639,7 @@ control 'docker-5.24' do
       its(%w[HostConfig CgroupParent]) { should be_empty }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.25' do
@@ -603,6 +652,7 @@ control 'docker-5.25' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.25'
   tag 'cis-docker-1.13.0': '5.25'
+  tag 'cis-docker-1.2.0': '5.25'
   tag 'level:1'
   ref 'BLOG: No New Privileges support in docker', url: 'https://github.com/projectatomic/atomic-site/issues/269'
   ref 'Add support for NoNewPrivileges in docker', url: 'https://github.com/moby/moby/pull/20727'
@@ -615,6 +665,7 @@ control 'docker-5.25' do
       its(%w[HostConfig SecurityOpt]) { should include(/no-new-privileges/) }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.26' do
@@ -627,6 +678,7 @@ control 'docker-5.26' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.26'
   tag 'cis-docker-1.13.0': '5.26'
+  tag 'cis-docker-1.2.0': '5.26'
   tag 'level:1'
   ref 'Add support for user-defined healthchecks', url: 'https://github.com/moby/moby/pull/22719'
 
@@ -635,6 +687,7 @@ control 'docker-5.26' do
       its('State.Health.Status') { should eq 'healthy' }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.27' do
@@ -647,12 +700,14 @@ control 'docker-5.27' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.27'
   tag 'cis-docker-1.13.0': '5.27'
+  tag 'cis-docker-1.2.0': '5.27'
   tag 'level:1'
   ref 'Modifying trusted/untrusted pull behavior for create/run/build', url: 'https://github.com/moby/moby/pull/16609'
 
   describe 'docker-test' do
     skip 'Ensure docker commands always get the latest version of the image'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.28' do
@@ -665,6 +720,7 @@ control 'docker-5.28' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.28'
   tag 'cis-docker-1.13.0': '5.28'
+  tag 'cis-docker-1.2.0': '5.28'
   tag 'level:1'
   ref 'Add PIDs cgroup support to Docker', url: 'https://github.com/moby/moby/pull/18697'
   ref 'docker run', url: 'https://docs.docker.com/engine/reference/commandline/run/'
@@ -675,6 +731,7 @@ control 'docker-5.28' do
       its('HostConfig.PidsLimit') { should_not cmp(-1) }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.29' do
@@ -687,6 +744,7 @@ control 'docker-5.29' do
   tag 'do cker'
   tag 'cis-docker-1.12.0': '5.29'
   tag 'cis-docker-1.13.0': '5.29'
+  tag 'cis-docker-1.2.0': '5.29'
   tag 'level:2'
   ref 'narwhal – secure Docker networking', url: 'https://github.com/nyantec/narwhal'
   ref 'Analysis of Docker Security', url: 'https://arxiv.org/pdf/1501.02967.pdf'
@@ -695,6 +753,7 @@ control 'docker-5.29' do
   describe 'docker-test' do
     skip 'Not implemented yet'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.30' do
@@ -707,6 +766,7 @@ control 'docker-5.30' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.30'
   tag 'cis-docker-1.13.0': '5.30'
+  tag 'cis-docker-1.2.0': '5.30'
   tag 'level:1'
   ref 'docker run', url: 'https://docs.docker.com/engine/reference/commandline/run/'
   ref 'Rooting out Root: User namespaces in Docker', url: 'https://events.linuxfoundation.org/sites/events/files/slides/User%20Namespaces%20-%20ContainerCon%202015%20-%2016-9-final_0.pdf'
@@ -717,6 +777,7 @@ control 'docker-5.30' do
       its('HostConfig.UsernsMode') { should eq '' }
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-5.31' do
@@ -729,6 +790,7 @@ control 'docker-5.31' do
   tag 'docker'
   tag 'cis-docker-1.12.0': '5.31'
   tag 'cis-docker-1.13.0': '5.31'
+  tag 'cis-docker-1.2.0': '5.31'
   tag 'level:1'
   ref 'The Dangers of Docker.sock', url: 'https://raesene.github.io/blog/2016/03/06/The-Dangers-Of-Docker.sock/'
   ref 'Docker-in-docker vs mounting /var/run/docker.sock', url: 'https://forums.docker.com/t/docker-in-docker-vs-mounting-var-run-docker-sock/9450/2'
@@ -741,4 +803,5 @@ control 'docker-5.31' do
       end
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end

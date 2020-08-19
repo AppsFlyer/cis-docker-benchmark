@@ -24,7 +24,7 @@ title 'Host Configuration'
 
 TRUSTED_USER = attribute('trusted_user')
 MANAGEABLE_CONTAINER_NUMBER = attribute('managable_container_number')
-BENCHMARK_VERSION = attribute('benchmark_version')
+BENCHMARK_VERSION ||= attribute('benchmark_version')
 
 # check if docker exists
 only_if('docker not found') do
@@ -41,12 +41,14 @@ control 'host-1.1' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.1'
   tag 'cis-docker-1.13.0': '1.1'
+  tag 'cis-docker-1.2.0': '1.2.1'
   tag 'level:1'
   ref 'Docker storage recommendation', url: 'http://www.projectatomic.io/docs/docker-storage-recommendation/'
 
   describe mount('/var/lib/docker') do
     it { should be_mounted }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
 end
 
 control 'host-1.2' do
@@ -81,6 +83,7 @@ control 'host-1.3' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.3'
   tag 'cis-docker-1.13.0': '1.2'
+  tag 'cis-docker-1.2.0': '1.1.1'
   tag 'level:1'
   ref 'Dev-Sec Hardening Framework', url: 'http://dev-sec.io/'
   ref 'Secure Engine', url: 'https://docs.docker.com/engine/security/'
@@ -93,6 +96,7 @@ control 'host-1.3' do
   describe 'docker-test' do
     skip 'Harden the container host. Use the Dev-Sec Hardening Framework'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-1.4' do
@@ -109,6 +113,7 @@ control 'host-1.4' do
   describe 'docker-test' do
     skip 'Remove all non-essential services from the host. Use the Dev-Sec Hardening Framework'
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' }
 end
 
 control 'host-1.5' do
@@ -121,6 +126,7 @@ control 'host-1.5' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.5'
   tag 'cis-docker-1.13.0': '1.3'
+  tag 'cis-docker-1.2.0': '1.1.2'
   tag 'level:1'
   ref 'Docker installation', url: 'https://docs.docker.com/engine/installation/'
   ref 'Docker releases', url: 'https://github.com/moby/moby/releases/tag/v17.03.2-ce'
@@ -130,6 +136,7 @@ control 'host-1.5' do
     its('version.Client.Version') { should cmp >= '17.06' }
     its('version.Server.Version') { should cmp >= '17.06' }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-1.6' do
@@ -142,6 +149,7 @@ control 'host-1.6' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.6'
   tag 'cis-docker-1.13.0': '1.4'
+  tag 'cis-docker-1.2.0': '1.2.2'
   tag 'level:1'
   ref 'Docker Engine Security', url: 'https://docs.docker.com/engine/security/'
   ref 'On Docker security: \'docker\' group considered harmful', url: 'https://www.zopyx.com/andreas-jung/contents/on-docker-security-docker-group-considered-harmful'
@@ -154,6 +162,7 @@ control 'host-1.6' do
   describe etc_group.where(group_name: 'docker') do
     its('users') { should include TRUSTED_USER }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-1.7' do
@@ -166,6 +175,7 @@ control 'host-1.7' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.7'
   tag 'cis-docker-1.13.0': '1.5'
+  tag 'cis-docker-1.2.0': '1.2.3'
   tag 'level:1'
   ref 'System auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
 
@@ -178,6 +188,7 @@ control 'host-1.7' do
     it { should be_enabled }
     it { should be_running }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
 end
 
 control 'host-1.8' do
@@ -190,13 +201,16 @@ control 'host-1.8' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.8'
   tag 'cis-docker-1.13.0': '1.6'
+  tag 'cis-docker-1.2.0': '1.2.4'
   tag 'level:1'
+  tag 'level-1.12.0:2'
   ref 'System auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
 
   only_if { os.linux? }
   describe auditd do
     its(:lines) { should include('-w /var/lib/docker -p rwxa -k docker') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
 end
 
 control 'host-1.9' do
@@ -209,6 +223,7 @@ control 'host-1.9' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.9'
   tag 'cis-docker-1.13.0': '1.7'
+  tag 'cis-docker-1.2.0': '1.2.5'
   tag 'level:1'
   ref 'System auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
 
@@ -216,6 +231,7 @@ control 'host-1.9' do
   describe auditd do
     its(:lines) { should include('-w /etc/docker -p rwxa -k docker') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
 end
 
 control 'host-1.10' do
@@ -228,6 +244,7 @@ control 'host-1.10' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.10'
   tag 'cis-docker-1.13.0': '1.8'
+  tag 'cis-docker-1.2.0': '1.2.6'
   tag 'level:1'
   ref 'System auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
 
@@ -242,6 +259,7 @@ control 'host-1.10' do
       skip 'Cannot determine docker path'
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.13.0'}
 end
 
 control 'host-1.11' do
@@ -254,6 +272,7 @@ control 'host-1.11' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.11'
   tag 'cis-docker-1.13.0': '1.9'
+  tag 'cis-docker-1.2.0': '1.2.7'
   tag 'level:1'
   ref 'System auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
 
@@ -268,6 +287,7 @@ control 'host-1.11' do
       skip 'Cannot determine docker socket'
     end
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
 end
 
 control 'host-1.12' do
@@ -280,6 +300,7 @@ control 'host-1.12' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.12'
   tag 'cis-docker-1.13.0': '1.10'
+  tag 'cis-docker-1.2.0': '1.2.8'
   tag 'level:1'
   ref 'System auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
 
@@ -287,6 +308,7 @@ control 'host-1.12' do
   describe auditd do
     its(:lines) { should include('-w /etc/default/docker -p rwxa -k docker') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-1.13' do
@@ -299,6 +321,7 @@ control 'host-1.13' do
   tag 'host'
   tag 'cis-docker-1.12.0': '1.13'
   tag 'cis-docker-1.13.0': '1.11'
+  tag 'cis-docker-1.2.0': '1.2.10'
   tag 'level:1'
   ref 'System auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
   ref 'Daemon configuration', url: 'https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file'
@@ -307,6 +330,7 @@ control 'host-1.13' do
   describe auditd do
     its(:lines) { should include('-w /etc/docker/daemon.json -p rwxa -k docker') }
   end
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-1.14' do
@@ -324,10 +348,10 @@ control 'host-1.14' do
   ref 'Containerd integration', url: 'https://github.com/docker/docker/pull/20662'
   ref 'Containerd tools', url: 'https://containerd.tools/'
 
-  only_if { os.linux? }
   describe auditd do
     its(:lines) { should include('-w /usr/bin/docker-containerd -p rwxa -k docker') }
   end
+  only_if { os.linux? && (BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0') }
 end
 
 control 'host-1.15' do
@@ -346,8 +370,70 @@ control 'host-1.15' do
   ref 'Containerd tools', url: 'https://containerd.tools/'
   ref 'Opencontainers runc repository', url: 'https://github.com/opencontainers/runc'
 
-  only_if { os.linux? }
   describe auditd do
     its(:lines) { should include('-w /usr/bin/docker-runc -p rwxa -k docker') }
   end
+  only_if { os.linux? && (BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0') }
+end
+
+control 'host-1.16' do
+  impact 1.0
+  title 'Audit Docker files and directories - /etc/sysconfig/docker'
+  desc 'Audit /etc/sysconfig/docker if applicable.
+
+  Rationale: As well as auditing the normal Linux file system and system calls, you should also audit the Docker daemon. Because this daemon runs with root privileges it is very important to audit its activities and usage. Its behavior depends on some key files and directories and /etc/sysconfig/docker is one such file as it contains various parameters related to the Docker daemon when run on CentOS and RHEL based distributions. If present, it is important that it is audited.'
+
+  tag 'host'
+  tag 'cis-docker-1.2.0': '1.2.9'
+  tag 'level:1'
+  ref 'System Auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
+
+  only_if { %w[centos redhat].include? os[:name] }
+  describe auditd do
+    its(:lines) { should include('-w /etc/sysconfig/docker -k docker') }
+  end
+  only_if { BENCHMARK_VERSION == '1.2.0' }
+end
+
+
+control 'host-1.17' do
+  impact 1.0
+  title 'Audit Docker files and directories - /usr/bin/containerd'
+  desc 'Audit /usr/bin/containerd if applicable..
+
+  Rationale: As well as auditing the normal Linux file system and system calls, you should audit all Docker related files and directories. The Docker daemon runs with root privileges and its behavior depends on some key files and directories. /usr/bin/containerd is one such file and as such should be audited.'
+
+  tag 'host'
+  tag 'cis-docker-1.2.0': '1.2.11'
+  tag 'level:1'
+  ref 'System auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
+  ref 'Containerd integration', url: 'https://github.com/docker/docker/pull/20662'
+  ref 'Containerd tools', url: 'https://containerd.tools/'
+
+
+  describe auditd do
+    its(:lines) { should include('-w /usr/bin/containerd -k docker') }
+  end
+  only_if { os.linux? && BENCHMARK_VERSION == '1.2.0' }
+end
+
+control 'host-1.18' do
+  impact 1.0
+  title 'Audit Docker files and directories - /usr/sbin/runc'
+  desc 'Audit /usr/sbin/runc, if applicable.
+
+  Rationale: As well as auditing the normal Linux file system and system calls, you should also audit all Docker related files and directories. The Docker daemon runs with root privileges and its behavior depends on some key files and directories. /usr/sbin/runc is one such file, and as such it should be audited.'
+
+  tag 'host'
+  tag 'cis-docker-1.2.0': '1.2.12'
+  tag 'level:1'
+  ref 'System auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
+  ref 'Containerd integration', url: 'https://github.com/docker/docker/pull/20662'
+  ref 'Containerd tools', url: 'https://containerd.tools/'
+  ref 'Opencontainers runc repository', url: 'https://github.com/opencontainers/runc'
+
+  describe auditd do
+    its(:lines) { should include('-w /usr/sbin/runc -k docker') }
+  end
+  only_if { os.linux? && BENCHMARK_VERSION == '1.2.0' }
 end
