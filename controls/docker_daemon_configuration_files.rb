@@ -1,8 +1,8 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
-# Copyright 2016, Patrick Muench
-# Copyright 2017, Christoph Hartmann
+# Copyright:: 2016, Patrick Muench
+# Copyright:: 2017, Christoph Hartmann
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -405,7 +405,7 @@ control 'docker-3.14' do
     it { should be_file }
     its('mode') { should cmp '0400' }
   end
-  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-3.15' do
@@ -591,10 +591,11 @@ control 'docker-3.21' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
-  only_if { file('/etc/sysconfig/docker').exist? && \
-  (BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0') }
+  only_if do
+    file('/etc/sysconfig/docker').exist? && \
+      (BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0')
+  end
 end
-
 
 control 'docker-3.22' do
   impact 1.0
@@ -621,6 +622,8 @@ control 'docker-3.22' do
     it { should_not be_writable.by('other') }
     it { should_not be_executable.by('other') }
   end
-  only_if { file('/etc/sysconfig/docker').exist? && \
-            (BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0') }
+  only_if do
+    file('/etc/sysconfig/docker').exist? && \
+      (BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0')
+  end
 end

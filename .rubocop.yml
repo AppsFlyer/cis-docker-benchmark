@@ -4,7 +4,7 @@ AllCops:
   - vendor/**/*
 Documentation:
   Enabled: false
-AlignParameters:
+ParameterAlignment:
   Enabled: true
 Encoding:
   Enabled: false
@@ -27,4 +27,4 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Max: 29
 AllCops:
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.6

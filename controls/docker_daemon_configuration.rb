@@ -1,8 +1,8 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
-# Copyright 2016, Patrick Muench
-# Copyright 2017, Christoph Hartmann
+# Copyright:: 2016, Patrick Muench
+# Copyright:: 2017, Christoph Hartmann
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -117,7 +117,7 @@ control 'docker-2.4' do
   describe json('/etc/docker/daemon.json') do
     its(['insecure-registries']) { should be_empty }
   end
-  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.5' do
@@ -140,7 +140,7 @@ control 'docker-2.5' do
   describe json('/etc/docker/daemon.json') do
     its(['storage-driver']) { should_not eq('aufs') }
   end
-  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.6' do
@@ -182,8 +182,8 @@ control 'docker-2.7' do
   ref 'Docker daemon deafult ulimits', url: 'https://docs.docker.com/engine/reference/commandline/daemon/#default-ulimits'
 
   describe json('/etc/docker/daemon.json') do
-    its(['default-ulimits', 'nproc']) { should eq('1024:2408') }
-    its(['default-ulimits', 'nofile']) { should eq('100': '200') }
+    its(%w(default-ulimits nproc)) { should eq('1024:2408') }
+    its(%w(default-ulimits nofile)) { should eq('100': '200') }
   end
   only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
@@ -467,7 +467,7 @@ control 'docker-2.19' do
       skip 'Cannot determine overlay networks'
     end
   end
-  only_if { BENCHMARK_VERSION == '1.13.0'|| BENCHMARK_VERSION == '1.2.0' }
+  only_if { BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'docker-2.20' do
@@ -566,7 +566,6 @@ control 'docker-2.24' do
   ref 'Swarm Key rotation', url: 'https://github.com/mistyhacks/docker.github.io/blob/af7dfdba8504f9b102fb31a78cd08a06c33a8975/engine/swarm/swarm_manager_locking.md'
   only_if { BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
-
 
 control 'docker-2.25' do
   impact 1.0

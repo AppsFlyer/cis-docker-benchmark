@@ -1,8 +1,8 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
-# Copyright 2016, Patrick Muench
-# Copyright 2017, Christoph Hartmann
+# Copyright:: 2016, Patrick Muench
+# Copyright:: 2017, Christoph Hartmann
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,8 +50,8 @@ control 'docker-4.1' do
 
   docker.containers.running?.ids.each do |id|
     describe docker.object(id) do
-      its(%w[Config User]) { should_not eq nil }
-      its(%w[Config User]) { should eq CONTAINER_USER }
+      its(%w(Config User)) { should_not eq nil }
+      its(%w(Config User)) { should eq CONTAINER_USER }
     end
   end
   only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
@@ -166,7 +166,7 @@ control 'docker-4.6' do
 
   docker.containers.running?.ids.each do |id|
     describe docker.object(id) do
-      its(%w[Config Healthcheck]) { should_not eq nil }
+      its(%w(Config Healthcheck)) { should_not eq nil }
     end
   end
   only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }

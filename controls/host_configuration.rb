@@ -1,8 +1,8 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
-# Copyright 2016, Patrick Muench
-# Copyright 2017, Christoph Hartmann
+# Copyright:: 2016, Patrick Muench
+# Copyright:: 2017, Christoph Hartmann
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ control 'host-1.1' do
   describe mount('/var/lib/docker') do
     it { should be_mounted }
   end
-  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-1.2' do
@@ -188,7 +188,7 @@ control 'host-1.7' do
     it { should be_enabled }
     it { should be_running }
   end
-  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-1.8' do
@@ -210,7 +210,7 @@ control 'host-1.8' do
   describe auditd do
     its(:lines) { should include('-w /var/lib/docker -p rwxa -k docker') }
   end
-  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-1.9' do
@@ -231,7 +231,7 @@ control 'host-1.9' do
   describe auditd do
     its(:lines) { should include('-w /etc/docker -p rwxa -k docker') }
   end
-  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-1.10' do
@@ -259,7 +259,7 @@ control 'host-1.10' do
       skip 'Cannot determine docker path'
     end
   end
-  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.13.0'}
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.13.0' }
 end
 
 control 'host-1.11' do
@@ -287,7 +287,7 @@ control 'host-1.11' do
       skip 'Cannot determine docker socket'
     end
   end
-  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0'}
+  only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
 
 control 'host-1.12' do
@@ -388,13 +388,12 @@ control 'host-1.16' do
   tag 'level:1'
   ref 'System Auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
 
-  only_if { %w[centos redhat].include? os[:name] }
+  only_if { %w(centos redhat).include? os[:name] }
   describe auditd do
     its(:lines) { should include('-w /etc/sysconfig/docker -k docker') }
   end
   only_if { BENCHMARK_VERSION == '1.2.0' }
 end
-
 
 control 'host-1.17' do
   impact 1.0
@@ -409,7 +408,6 @@ control 'host-1.17' do
   ref 'System auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
   ref 'Containerd integration', url: 'https://github.com/docker/docker/pull/20662'
   ref 'Containerd tools', url: 'https://containerd.tools/'
-
 
   describe auditd do
     its(:lines) { should include('-w /usr/bin/containerd -k docker') }
