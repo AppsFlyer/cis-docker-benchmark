@@ -182,8 +182,8 @@ control 'docker-2.7' do
   ref 'Docker daemon deafult ulimits', url: 'https://docs.docker.com/engine/reference/commandline/daemon/#default-ulimits'
 
   describe json('/etc/docker/daemon.json') do
-    its(%w(default-ulimits nproc)) { should eq('1024:2408') }
-    its(%w(default-ulimits nofile)) { should eq('100': '200') }
+    its(%w[default-ulimits nproc]) { should eq('1024:2408') }
+    its(%w[default-ulimits nofile]) { should eq('100': '200') }
   end
   only_if { BENCHMARK_VERSION == '1.12.0' || BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
@@ -525,7 +525,7 @@ control 'docker-2.22' do
 
   only_if { SWARM_MODE == 'active' }
   describe command('docker secret ls -q').stdout.split("\n").length do
-    it { should be > 0 }
+    it { should be.positive? }
   end
   only_if { BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end
@@ -545,7 +545,7 @@ control 'docker-2.23' do
 
   only_if { SWARM_MODE == 'active' }
   describe command('docker swarm unlock-key -q').stdout.chomp.length do
-    it { should be > 0 }
+    it { should be.positive? }
   end
   only_if { BENCHMARK_VERSION == '1.13.0' || BENCHMARK_VERSION == '1.2.0' }
 end

@@ -388,7 +388,7 @@ control 'host-1.16' do
   tag 'level:1'
   ref 'System Auditing', url: 'https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-system_auditing.html'
 
-  only_if { %w(centos redhat).include? os[:name] }
+  only_if { %w[centos redhat].include? os[:name] }
   describe auditd do
     its(:lines) { should include('-w /etc/sysconfig/docker -k docker') }
   end

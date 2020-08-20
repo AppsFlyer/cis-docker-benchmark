@@ -196,9 +196,7 @@ control 'docker-3.7' do
   impact 1.0
   title 'Verify that registry certificate file ownership is set to root:root'
   desc 'Verify that all the registry certificate files (usually found under /etc/docker/certs.d/<registry-name> directory) are owned and group-owned by \'root\'.
-
   Rationale: /etc/docker/certs.d/<registry-name> directory contains Docker registry certificates. These certificate files must be owned and group-owned by \'root\' to maintain the integrity of the certificates.'
-
   tag 'docker'
   tag 'cis-docker-1.12.0': '3.7'
   tag 'cis-docker-1.13.0': '3.7'
@@ -214,14 +212,12 @@ control 'docker-3.7' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
-
   describe file(REGISTRY_NAME) do
     it { should exist }
     it { should be_directory }
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
-
   describe file(REGISTRY_CA_FILE) do
     it { should exist }
     it { should be_file }
