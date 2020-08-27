@@ -97,6 +97,7 @@ In order to verify individual controls, just provide the control ids to InSpec:
 
 ```sh
 inspec exec cis-docker-benchmark --controls 'cis-docker-benchmark-1.4 cis-docker-benchmark-1.5'
+inspec exec cis-docker-benchmark --controls=$(cat cis-docker-benchmark/controls.txt)
 ```
 
 ## Contributors + Kudos
